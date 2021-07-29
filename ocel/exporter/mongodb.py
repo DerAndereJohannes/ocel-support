@@ -1,8 +1,8 @@
 import copy
+from pymongo import MongoClient
 
 
-def export(log, db):
-    print(log.keys())
+def apply(log, db):
     others_collection = db["ocel:others"]
     events_collection = db["ocel:events"]
     objects_collection = db["ocel:objects"]
