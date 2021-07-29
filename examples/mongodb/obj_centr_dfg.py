@@ -16,9 +16,13 @@ def execute_script():
     ggg = {x["_id"]: x["Subject"] for x in ggg}
     for ot in object_types:
         objects = objects_collection.find({"ocel:type": ot}).distinct("ocel:id")
-        for gk in ggg:
-            print(gk)
-
+        dfg = Counter()
+        for ob in objects:
+            if ob in ggg:
+                lif = ggg[ob]
+                for i in range(len(lif)-1):
+                    dfg[(lif[i], lif[i+1])] += 1
+        mdfg[ot] = dict(dfg)
     bb = time.time_ns()
     print("\nTOTAL TIME: ",(bb-aa)/10**9)
     print(mdfg)
