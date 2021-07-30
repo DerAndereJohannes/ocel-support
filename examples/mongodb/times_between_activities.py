@@ -10,7 +10,7 @@ def execute_script():
     events_collection = db["ocel:events"]
     aa = time.time_ns()
     #activities_filter = events_collection.find({"ocel:activity": {"$in": ["Create Quotation", "Create Order"]}}, {"ocel:activity": 1, "ocel:timestamp": 1})
-    ggg = events_collection.aggregate([{"$sort": {"ocel:timestamp": 1}}, {"$match": {"ocel:activity": {"$in": ["Create Quotation", "Create Order"]}}}, {"$unwind": "$ocel:omap"}, {"$group": {'_id': '$ocel:omap', 'activityComb': {"$push": '$ocel:activity'}, 'timestampComb': {"$push": '$ocel:timestamp'}}}])
+    ggg = events_collection.aggregate([{"$match": {"ocel:activity": {"$in": ["Create Quotation", "Create Order"]}}}, {"$sort": {"ocel:timestamp": 1}}, {"$unwind": "$ocel:omap"}, {"$group": {'_id': '$ocel:omap', 'activityComb': {"$push": '$ocel:activity'}, 'timestampComb': {"$push": '$ocel:timestamp'}}}])
     times = []
     for el in ggg:
         activities = el["activityComb"]
