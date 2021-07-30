@@ -20,6 +20,7 @@ def execute_script():
                 times.append(timestamp[i+1].timestamp() - timestamp[i].timestamp())
     print(median(times))
     bb = time.time_ns()
+    print("\nTOTAL TIME: ",(bb-aa)/10**9)
 
 
 if __name__ == "__main__":
