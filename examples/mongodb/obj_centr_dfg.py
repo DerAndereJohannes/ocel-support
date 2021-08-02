@@ -16,7 +16,8 @@ def execute_script():
         [{"$unwind": "$ocel:omap"}, {"$group": {'_id': '$ocel:omap', 'Subject': {"$push": '$ocel:activity'}}}], allowDiskUse=True)
     ggg = {str(x["_id"]): x["Subject"] for x in ggg}
     for ot in object_types:
-        objects = objects_collection.find({"ocel:type": ot}).distinct("ocel:id")
+        objects = objects_collection.aggregate([{"$match": {"ocel:type": ot}}, {"$group": {"_id": "$ocel:id"}}], allowDiskUse=True)
+        objects = [x["_id"] for x in objects]
         dfg = Counter()
         for ob in objects:
             if ob in ggg:
