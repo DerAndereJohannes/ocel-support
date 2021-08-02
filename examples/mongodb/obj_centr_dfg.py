@@ -13,7 +13,7 @@ def execute_script():
     aa = time.time_ns()
     object_types = objects_collection.distinct("ocel:type")
     ggg = events_collection.aggregate(
-        [{"$sort": {"ocel:timestamp": 1}}, {"$unwind": "$ocel:omap"}, {"$group": {'_id': '$ocel:omap', 'Subject': {"$push": '$ocel:activity'}}}])
+        [{"$unwind": "$ocel:omap"}, {"$group": {'_id': '$ocel:omap', 'Subject': {"$push": '$ocel:activity'}}}], allowDiskUse=True)
     ggg = {str(x["_id"]): x["Subject"] for x in ggg}
     for ot in object_types:
         objects = objects_collection.find({"ocel:type": ot}).distinct("ocel:id")
