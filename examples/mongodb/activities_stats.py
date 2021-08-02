@@ -11,8 +11,8 @@ def execute_script():
     activities = events_collection.distinct("ocel:activity")
     for act in activities:
         n_events = events_collection.find({"ocel:activity": act}).count()
-        n_unq_obj = len(events_collection.find({"ocel:activity": act}).distinct("ocel:omap"))
-        n_tot_obj = len(events_collection.find({"ocel:activity": act}).distinct("ocel:omapWId"))
+        n_unq_obj = len(list(events_collection.aggregate([{"$match": {"ocel:activity": act}}, {"$unwind": "$ocel:omap"}, {"$group": {"_id": "$ocel:omap"}}], allowDiskUse=True)))
+        n_tot_obj = len(list(events_collection.aggregate([{"$match": {"ocel:activity": act}}, {"$unwind": "$ocel:omapWId"}, {"$group": {"_id": "$ocel:omapWId"}}], allowDiskUse=True)))
         print("activity="+act+" events="+str(n_events)+" unique objs="+str(n_unq_obj)+" total objs="+str(n_tot_obj))
     bb = time.time_ns()
     print("\nTOTAL TIME: ",(bb-aa)/10**9)

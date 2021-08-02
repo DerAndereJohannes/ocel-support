@@ -8,7 +8,7 @@ def execute_script():
     db = client[DATABASE_NAME]
     events_collection = db["ocel:events"]
     aa = time.time_ns()
-    activities_filter = events_collection.find({"ocel:activity": {"$in": ["Create Quotation", "Create Order"]}})
+    activities_filter = events_collection.find({"ocel:activity": {"$in": ["Create Quotation", "Create Order", "Create document (EKKO)"]}})
     for el in activities_filter:
         print(el)
     bb = time.time_ns()

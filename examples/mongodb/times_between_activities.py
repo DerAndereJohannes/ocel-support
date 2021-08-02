@@ -10,13 +10,15 @@ def execute_script():
     events_collection = db["ocel:events"]
     aa = time.time_ns()
     #activities_filter = events_collection.find({"ocel:activity": {"$in": ["Create Quotation", "Create Order"]}}, {"ocel:activity": 1, "ocel:timestamp": 1})
-    ggg = events_collection.aggregate([{"$match": {"ocel:activity": {"$in": ["Create Quotation", "Create Order"]}}}, {"$sort": {"ocel:timestamp": 1}}, {"$unwind": "$ocel:omap"}, {"$group": {'_id': '$ocel:omap', 'activityComb': {"$push": '$ocel:activity'}, 'timestampComb': {"$push": '$ocel:timestamp'}}}])
+    ggg = events_collection.aggregate([{"$match": {"ocel:activity": {"$in": ["Create Quotation", "Create Order", "Create document (EKKO)", "Enter incoming invoice"]}}}, {"$sort": {"ocel:timestamp": 1}}, {"$unwind": "$ocel:omap"}, {"$group": {'_id': '$ocel:omap', 'activityComb': {"$push": '$ocel:activity'}, 'timestampComb': {"$push": '$ocel:timestamp'}}}], allowDiskUse=True)
     times = []
     for el in ggg:
         activities = el["activityComb"]
         timestamp = el["timestampComb"]
         for i in range(len(activities)-1):
-            if activities[i] == "Create Quotation" and activities[i+1] == "Create Order":
+            print(activities[i], activities[i+1])
+            #if activities[i] == "Create Quotation" and activities[i+1] == "Create Order":
+            if activities[i] == "Create document (EKKO)" and activities[i + 1] == "Enter incoming invoice":
                 times.append(timestamp[i+1].timestamp() - timestamp[i].timestamp())
     print(median(times))
     bb = time.time_ns()

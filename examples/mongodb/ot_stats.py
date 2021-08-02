@@ -8,7 +8,8 @@ def execute_script():
     db = client[DATABASE_NAME]
     objects_collection = db["ocel:objects"]
     aa = time.time_ns()
-    object_types = objects_collection.distinct("ocel:type")
+    object_types = objects_collection.aggregate([{"$group": {"_id": "$ocel:type"}}], allowDiskUse=True)
+    object_types = [x["_id"] for x in object_types]
     for ot in object_types:
         n_obj = objects_collection.find({"ocel:type": ot}).count()
         print("ot="+ot+" n_obj="+str(n_obj))
