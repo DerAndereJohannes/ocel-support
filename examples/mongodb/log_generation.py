@@ -21,12 +21,14 @@ def generate_events_objects():
         else:
             payments3.append(p)
     payments124 = sorted(list(set(payments1).union(set(payments2))))
-    count = 0
     list_events = []
     list_objects = []
+    count = 0
     for o in orders:
         all_objects = [o]
-        rec = {"ocel:id": str(count), "ocel:activity": "Create document (EKKO)", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}}
+        event_id = "EV"+str(uuid.uuid4())
+        all_obj_w_vmap = [x+"_"+event_id for x in all_objects]
+        rec = {"ocel:id": event_id, "ocel:activity": "Create document (EKKO)", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}, "ocel:omapWId": all_obj_w_vmap}
         list_events.append(rec)
         count = count + 1
         list_objects.append({"ocel:id": o, "ocel:type": "EBELN-EBELN", "ocel:vmap": {}})
@@ -37,7 +39,9 @@ def generate_events_objects():
             order_items.add(orders[randrange(0, len(orders))])
             r = random.random()
         all_objects = [rr] + list(order_items)
-        rec = {"ocel:id": str(count), "ocel:activity": "Create document (RESB)", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}}
+        event_id = "EV"+str(uuid.uuid4())
+        all_obj_w_vmap = [x+"_"+event_id for x in all_objects]
+        rec = {"ocel:id": event_id, "ocel:activity": "Create document (RESB)", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}, "ocel:omapWId": all_obj_w_vmap}
         list_events.append(rec)
         count = count + 1
         list_objects.append({"ocel:id": rr, "ocel:type": "RSNUM-RSNUM", "ocel:vmap": {}})
@@ -48,7 +52,9 @@ def generate_events_objects():
             order_items.add(orders[randrange(0, len(orders))])
             r = random.random()
         all_objects = [i] + list(order_items)
-        rec = {"ocel:id": str(count), "ocel:activity": "Enter incoming invoice", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}}
+        event_id = "EV"+str(uuid.uuid4())
+        all_obj_w_vmap = [x+"_"+event_id for x in all_objects]
+        rec = {"ocel:id": event_id, "ocel:activity": "Enter incoming invoice", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}, "ocel:omapWId": all_obj_w_vmap}
         list_events.append(rec)
         count = count + 1
         list_objects.append({"ocel:id": i, "ocel:type": "BELNR-RE_BELNR", "ocel:vmap": {}})
@@ -64,15 +70,19 @@ def generate_events_objects():
             invoice_items.add(invoices[randrange(0, len(invoices))])
             r = random.random()
         all_objects = [p] + list(order_items)
-        rec = {"ocel:id": str(count), "ocel:activity": "Vendor invoice posting", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}}
+        event_id = "EV"+str(uuid.uuid4())
+        all_obj_w_vmap = [x+"_"+event_id for x in all_objects]
+        rec = {"ocel:id": event_id, "ocel:activity": "Vendor invoice posting", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}, "ocel:omapWId": all_obj_w_vmap}
         list_events.append(rec)
         count = count + 1
         list_objects.append({"ocel:id": p, "ocel:type": "BELNR-BELNR_D", "ocel:vmap": {}})
         r = random.random()
         if r > 0.8:
-            all_objects = [p+"R", list(order_items)]
-            rec = {"ocel:id": str(count), "ocel:activity": "Revert Document",
-                   "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}}
+            all_objects = [p+"R"] + list(order_items)
+            event_id = "EV" + str(uuid.uuid4())
+            all_obj_w_vmap = [x + "_" + event_id for x in all_objects]
+            rec = {"ocel:id": event_id, "ocel:activity": "Revert Document",
+                   "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}, "ocel:omapWId": all_obj_w_vmap}
             list_objects.append({"ocel:id": p+"R", "ocel:type": "BELNR-BELNR_D", "ocel:vmap": {}})
             list_events.append(rec)
             count = count + 1
@@ -83,13 +93,17 @@ def generate_events_objects():
             order_items.add(orders[randrange(0, len(orders))])
             r = random.random()
         all_objects = [p] + list(order_items)
-        rec = {"ocel:id": str(count), "ocel:activity": "Post Outgoing Payment", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}}
+        event_id = "EV"+str(uuid.uuid4())
+        all_obj_w_vmap = [x + "_" + event_id for x in all_objects]
+        rec = {"ocel:id": event_id, "ocel:activity": "Post Outgoing Payment", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:omap": all_objects, "ocel:vmap": {}, "ocel:omapWId": all_obj_w_vmap}
         list_events.append(rec)
         count = count + 1
         list_objects.append({"ocel:id": p, "ocel:type": "BELNR-BELNR_D", "ocel:vmap": {}})
     for p in payments3:
         all_objects = [p]
-        rec = {"ocel:id": str(count), "ocel:activity": "Enter Incoming Payment", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "BELNR-BELNR_D": all_objects, "ocel:vmap": {}}
+        event_id = "EV"+str(uuid.uuid4())
+        all_obj_w_vmap = [x + "_" + event_id for x in all_objects]
+        rec = {"ocel:id": event_id, "ocel:activity": "Enter Incoming Payment", "ocel:timestamp": datetime.datetime.fromtimestamp(1000000 + count), "ocel:vmap": {}, "ocel:omapWId": all_obj_w_vmap}
         list_events.append(rec)
         count = count + 1
         list_objects.append({"ocel:id": p, "ocel:type": "BELNR-BELNR_D", "ocel:vmap": {}})

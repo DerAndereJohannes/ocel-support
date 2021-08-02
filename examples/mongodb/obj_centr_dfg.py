@@ -14,7 +14,7 @@ def execute_script():
     object_types = objects_collection.distinct("ocel:type")
     ggg = events_collection.aggregate(
         [{"$unwind": "$ocel:omap"}, {"$group": {'_id': '$ocel:omap', 'Subject': {"$push": '$ocel:activity'}}}], allowDiskUse=True)
-    ggg = {str(x["_id"]): x["Subject"] for x in ggg}
+    ggg = {x["_id"]: x["Subject"] for x in ggg}
     for ot in object_types:
         objects = objects_collection.aggregate([{"$match": {"ocel:type": ot}}, {"$group": {"_id": "$ocel:id"}}], allowDiskUse=True)
         objects = [x["_id"] for x in objects]
