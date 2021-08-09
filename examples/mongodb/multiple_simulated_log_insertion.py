@@ -19,7 +19,7 @@ def execute_script():
 
     num_events = 0
 
-    TARGET = 100000
+    TARGET = 1000000
     while num_events < TARGET:
         list_events, list_objects = generate_events_objects()
         events_collection.insert_many(list_events)

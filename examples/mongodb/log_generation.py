@@ -5,10 +5,11 @@ import uuid
 
 
 def generate_events_objects():
-    orders = ["O"+str(uuid.uuid4()) for i in range(randrange(5000, 15000))]
-    resb = ["R"+str(uuid.uuid4()) for i in range(randrange(5000, 15000))]
-    invoices = ["I"+str(uuid.uuid4()) for i in range(randrange(5000, 15000))]
-    payments = ["P"+str(uuid.uuid4()) for i in range(randrange(5000, 15000))]
+    SEED = 10000
+    orders = ["O"+str(uuid.uuid4()) for i in range(randrange(5 * SEED, 15 * SEED))]
+    resb = ["R"+str(uuid.uuid4()) for i in range(randrange(5 * SEED, 15 * SEED))]
+    invoices = ["I"+str(uuid.uuid4()) for i in range(randrange(5 * SEED, 15 * SEED))]
+    payments = ["P"+str(uuid.uuid4()) for i in range(randrange(5 * SEED, 15 * SEED))]
     payments1 = []
     payments2 = []
     payments3 = []
