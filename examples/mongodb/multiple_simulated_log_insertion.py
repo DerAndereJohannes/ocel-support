@@ -19,7 +19,8 @@ def execute_script():
 
     num_events = 0
 
-    TARGET = 1000000
+    TARGET = 5000000
+    aa = time.time_ns()
     while num_events < TARGET:
         list_events, list_objects = generate_events_objects()
         events_collection.insert_many(list_events)
@@ -36,6 +37,8 @@ def execute_script():
     objects_collection.create_index([("ocel:id", 1)])
     objects_collection.create_index([("ocel:type", 1)])
     print("created objects_collection index")
+    bb = time.time_ns()
+    print("INSERTION TIME:", (bb-aa)/10**9)
 
 
 if __name__ == "__main__":
