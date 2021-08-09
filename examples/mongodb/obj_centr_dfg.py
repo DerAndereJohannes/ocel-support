@@ -15,8 +15,12 @@ def execute_script():
     mdfg = {}
     aa = time.time_ns()
     object_types = objects_collection.distinct("ocel:type")
+    if DEBUG:
+        print("retrieved object types")
     ggg0 = events_collection.aggregate(
         [{"$unwind": "$ocel:omap"}, {"$group": {'_id': '$ocel:omap', 'Subject': {"$push": '$ocel:activity'}}}], allowDiskUse=True)
+    if DEBUG:
+        print("retrieved objects lifecycle from DB")
     dictio_activities = {}
     ggg = {}
     for x in ggg0:
