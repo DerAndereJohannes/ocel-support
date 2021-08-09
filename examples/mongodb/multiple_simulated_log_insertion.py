@@ -28,6 +28,15 @@ def execute_script():
 
         print(num_events, "of", TARGET, "(", float(num_events)/float(TARGET) * 100.0, " per cent)")
 
+    print("inserted events. creating indices.")
+    events_collection.create_index([("ocel:id", 1)])
+    events_collection.create_index([("ocel:activity", 1)])
+    events_collection.create_index([("ocel:omap", 1)])
+    print("created events_collection index")
+    objects_collection.create_index([("ocel:id", 1)])
+    objects_collection.create_index([("ocel:type", 1)])
+    print("created objects_collection index")
+
 
 if __name__ == "__main__":
     execute_script()
