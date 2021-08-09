@@ -8,6 +8,8 @@ def execute_script():
     client = MongoClient(CONNECTION_STRING)
     stats = client[DATABASE_NAME].command("dbstats")
     print(stats)
+    mem = client[DATABASE_NAME].command("serverStatus")["tcmalloc"]["generic"]
+    print(mem)
 
 
 if __name__ == "__main__":
