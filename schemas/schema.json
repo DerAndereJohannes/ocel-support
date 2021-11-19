@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": true,
   "definitions": {
     "AttributeBooleanType": {
@@ -25,71 +25,69 @@
       "type": "object"
     },
     "EventType": {
-      "properties": {
-        "ocel:id": {
-          "$ref": "#/definitions/AttributeStringType"
-        },
-        "ocel:activity": {
-          "$ref": "#/definitions/AttributeStringType"
-        },
-        "ocel:timestamp": {
-          "$ref": "#/definitions/AttributeDateType"
-        },
-        "ocel:vmap": {
-          "items": {
-            "$ref": "#/definitions/ValueMappingType"
+      "patternProperties": {
+        "(.*?)": {
+          "type": "object",
+          "properties": {
+            "ocel:id": {
+              "$ref": "#/definitions/AttributeStringType"
+            },
+            "ocel:activity": {
+              "$ref": "#/definitions/AttributeStringType"
+            },
+            "ocel:timestamp": {
+              "$ref": "#/definitions/AttributeDateType"
+            },
+            "ocel:vmap": {
+              "items": {
+                "$ref": "#/definitions/ValueMappingType"
+              },
+              "type": "object"
+            },
+            "ocel:omap": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AttributeStringType"
+              }
+            }
           },
-          "type": "object"
-        },
-        "ocel:omap": {
-          "type": "array"
+          "required": [
+            "ocel:activity",
+            "ocel:timestamp",
+            "ocel:omap",
+            "ocel:vmap"
+          ]
         }
-      },
-      "required": [
-        "ocel:id",
-        "ocel:activity",
-        "ocel:timestamp",
-        "ocel:omap",
-        "ocel:vmap"
-      ],
-      "type": "object"
+      }
     },
     "ObjectType": {
-      "properties": {
-        "ocel:id": {
-          "$ref": "#/definitions/AttributeStringType"
-        },
-        "ocel:type": {
-          "$ref": "#/definitions/AttributeStringType"
-        },
-        "ocel:ovmap": {
-          "items": {
-            "$ref": "#/definitions/ValueMappingType"
+      "type": "object",
+      "patternProperties": {
+        "(.*?)": {
+          "type": "object",
+          "properties": {
+            "ocel:type": {
+              "$ref": "#/definitions/AttributeStringType"
+            },
+            "ocel:ovmap": {
+              "$ref": "#/definitions/ValueMappingType"
+            }
           },
-          "type": "object"
+          "required": [
+            "ocel:type",
+            "ocel:ovmap"
+          ]
         }
-      },
-      "required": [
-        "ocel:id",
-        "ocel:type",
-        "ocel:ovmap"
-      ],
-      "type": "object"
+      }
     }
   },
   "description": "Schema for the JSON-OCEL implementation",
   "properties": {
     "ocel:events": {
-      "items": {
-        "$ref": "#/definitions/EventType"
-      },
-      "type": "object"
+      "$ref": "#/definitions/EventType"
     },
     "ocel:objects": {
-      "items": {
-        "$ref": "#/definitions/ObjectMappingType"
-      },
-      "type": "object"
+      "$ref": "#/definitions/ObjectType"
     }
   },
   "type": "object"
